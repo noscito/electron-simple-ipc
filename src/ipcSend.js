@@ -38,10 +38,11 @@ if (process.type == 'renderer') {
     ipcSend = (event, payload) => {
         const wrappedPayload = getWrappedPayload(payload);
         ipcRenderer.send(event, wrappedPayload);
+        ipcRenderer.emit(event, null, wrappedPayload);
     };
 
 } else {
-    const { webContents } = require('electron');
+    const { webContents, ipcMain } = require('electron');
 
     ipcSend = (event, payload) => {
         const wrappedPayload = getWrappedPayload(payload);
@@ -49,6 +50,7 @@ if (process.type == 'renderer') {
         webContents.getAllWebContents().forEach(({ webContents }) => {
             webContents.send(event, wrappedPayload);
         });
+        ipcMain.emit(event, null, wrappedPayload);
     }
 }
 
