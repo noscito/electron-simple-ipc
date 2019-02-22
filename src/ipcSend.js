@@ -48,7 +48,7 @@ if (process.type == 'renderer') {
         const wrappedPayload = getWrappedPayload(payload);
         
         webContents.getAllWebContents().forEach(({ webContents }) => {
-            webContents.send(event, wrappedPayload);
+            webContents.sendToAll(event, wrappedPayload);
         });
         ipcMain.emit(event, null, wrappedPayload);
     }
